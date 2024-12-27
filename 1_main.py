@@ -32,3 +32,8 @@ class conexão:
 
 if __name__ == "__main__":
     conexão()
+
+
+
+#sdsdksdsdjsdsjdskdjsd
+#sdskdsdjsjdsdksdjs
