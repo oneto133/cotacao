@@ -6,7 +6,7 @@ try:
   from pdf2docx import Converter as pdf # type: ignore
   from PIL import ImageTk, Image # type: ignore
   import datetime, pytz, os, platform #type: ignore
-  
+
 except:
   from time import sleep
   from tkinter import filedialog, messagebox
@@ -273,10 +273,30 @@ class csv:
       file.write(f"{texto_tratado}\n")
   
   def ler_csv(self, nome, coluna):
-    df = pd.read_csv(nome, encoding="latin1")
+    self.df = pd.read_csv(nome, encoding="latin1")
     
-    return df[coluna]
+    return self.df[coluna]
+  
+  def tipo(self, nome, coluna, igual, tipo):
+    df = pd.read_csv(nome, encoding="latin1")
+    return df.loc[df[coluna] == igual, tipo].item()
 
+class moeda:
+  def __init__(self):
+    pass
+
+  def formatar_moeda(self, valor):
+    moeda = str(valor).replace(".", ",")
+
+    if len(valor) > 7:
+      virgula = moeda.find(",")
+      ponto = "."
+      repartir = virgula - 3
+      return "R$" + moeda[:repartir] + ponto + moeda[repartir:]
+    
+    else:
+      return moeda.replace(".", ",")
+    
 if __name__ == "__main__":
-  teste = csv()
-  print(teste.ler_csv(r"csv/url.csv", "url"))
+  moed = moeda()
+  print(moed.formatar_moeda("668226,43"))

@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-from Funções import Tratamento_de_strings, csv, Horarios
+from Funções import Tratamento_de_strings, csv, Horarios, moeda
 
 class conexão:
     def __init__(self):
@@ -9,30 +9,36 @@ class conexão:
         arquivo = csv()
         ler = arquivo.ler_csv(r"csv/url.csv", "url")
         
+
         for url in ler:
             lista_de_url.append(url)
         
         cont = 0
         for c in range(0,len(lista_de_url)):
-            self.main(lista_de_url[cont], "-1")
+            tipo = arquivo.tipo(r"csv/url.csv", "url", lista_de_url[cont], "cod")
+            self.main(lista_de_url[cont], str(tipo))
             cont += 1
             
     def main(self, url, tipo):
+
         parametros = {
-            "-1": (lambda cotação, código, variações, rendimento_atual, equivalente:
-                   f"""Cotação atual {cotação} *Sem mais informações sobre a moeda"""),
-            "2": (lambda cotação, código, variações, rendimento_atual, equivalente:f"""
-A cotação atual é {cotação} o código da moeda é {código}
-no dia de hoje a moeda ficou entre {variações} o rendimento atual é {rendimento_atual}
-isso equivale a R${equivalente:.2f} de lucro."""
-),
-"3": (lambda cotação, código, variações, rendimento_atual, equivalente: 
-      f"""
-A cotação atual é {cotação} de {código} e as variações do dia foram entre {variações}""")
-}
+            "-1": lambda cotação, código, variações, rendimento_atual, equivalente: f"""
+            Cotação atual: {cotação} para {código}.
+            Sem mais informações sobre a moeda.
+            """,
+            "2": lambda cotação, código, variações, rendimento_atual, equivalente: f"""
+            A cotação atual é {cotação} o código da moeda é {código}.
+            No dia de hoje a moeda ficou entre {variações}.
+            O rendimento atual é {rendimento_atual}, isso equivale a R${equivalente:.2f} de lucro.
+            """,
+            "3": lambda cotação, código, variações, rendimento_atual, equivalente: f"""
+            A cotação atual é {cotação} de {código} e as variações do dia foram entre {variações}.
+            """
+        }
 
         try:
             CSV = csv()
+            Valor = moeda()
             tempo = Horarios()
             data = tempo.data_atual()
             hora = tempo.hora_atual()
@@ -41,15 +47,20 @@ A cotação atual é {cotação} de {código} e as variações do dia foram entr
             tratamento = Tratamento_de_strings()
 
             if self.resposta.status_code == 200:
-                soup = BeautifulSoup(self.resposta.text, "html.parser")
-                cotação = soup.select_one("div.YMlKec.fxKbKc")
-                self.código = url[37:42]
-                variação_do_preço = soup.select("div.P6K39c")
-                rendimentos = variação_do_preço[6]
-                self.cotação = tratamento.tratar_dados_de_url(cotação)
-                self.rendimento = tratamento.tratar_dados_de_url(rendimentos)
-                self.variações = tratamento.tratar_dados_de_url(variação_do_preço[2])
-                self.equivalente = tratamento.tratar_valores_url(cotação, rendimentos)
+                if tipo == "-1" or tipo == "2" or tipo == "3":
+                    soup = BeautifulSoup(self.resposta.text, "html.parser")
+                    cotação = soup.select_one("div.YMlKec.fxKbKc")
+                    self.cotação = Valor.formatar_moeda(tratamento.tratar_dados_de_url(cotação))
+                    self.código = url[37:42]
+                    self.rendimento = None
+                    self.variações = None
+                    self.equivalente = None
+                    if tipo == "2" or tipo == "3":
+                        variação_do_preço = soup.select("div.P6K39c")
+                        rendimentos = variação_do_preço[6]
+                        self.rendimento = tratamento.tratar_dados_de_url(rendimentos)
+                        self.variações = tratamento.tratar_dados_de_url(variação_do_preço[2])
+                        self.equivalente = tratamento.tratar_valores_url(cotação, rendimentos)
 
                 if str(tipo) in parametros:
                     print(parametros[tipo](cotação=self.cotação, código=self.código,
