@@ -2,17 +2,17 @@ try:
   """
   Coloquei dentro de um tratamento de erros para não precisar instalar
   """
-  from IPython.display import clear_output
-  from pdf2docx import Converter as pdf
-  from PIL import ImageTk, Image
-  import datetime, pytz, os, platform
+  from IPython.display import clear_output # type: ignore
+  from pdf2docx import Converter as pdf # type: ignore
+  from PIL import ImageTk, Image # type: ignore
+  import datetime, pytz, os, platform #type: ignore
+  
 except:
-  pass
-
-from time import sleep
-from tkinter import filedialog, messagebox
-from string import ascii_uppercase, ascii_lowercase
-from datetime import datetime
+  from time import sleep
+  from tkinter import filedialog, messagebox
+  from string import ascii_uppercase, ascii_lowercase
+  from datetime import datetime
+  import pandas as pd
 
 class Horarios:
   def hora(self):
@@ -52,10 +52,12 @@ class Horarios:
     """
     Show de hour with minutes and seconds
     """
-    return datetime.now()
+    agora = datetime.now()
+    return agora.strftime("%H:%M:%S")
 
   def data_atual(self):
-    return datetime.now().date()
+    agora = datetime.now()
+    return agora.strftime("%d/%m/%Y")
 
 class Funcao():
   def __init__(self):
@@ -260,4 +262,21 @@ class Tratamento_de_strings:
     resultado = preço * (divisor / 100)
     return resultado
 
+class csv:
+  def __init__(self):
+    pass
+  def escrever_csv(self, conteudo=str(), nome="arquivo.csv",
+                   tipo="w"):
+    texto = str(conteudo)
+    texto_tratado = texto.replace("(", "").replace(")","").replace("'","")
+    with open(nome, tipo) as file:
+      file.write(f"{texto_tratado}\n")
   
+  def ler_csv(self, nome, coluna):
+    df = pd.read_csv(nome, encoding="latin1")
+    
+    return df[coluna]
+
+if __name__ == "__main__":
+  teste = csv()
+  print(teste.ler_csv(r"csv/url.csv", "url"))
