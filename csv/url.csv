@@ -1,3 +1,4 @@
-código,url
-petr4,https://www.google.com/finance/quote/PETR4:BVMF
-MXRF11,https://www.google.com/finance/quote/MXRF11:BVMF
+código,url,tipo
+petr4,https://www.google.com/finance/quote/PETR4:BVMF,bdr
+MXRF11,https://www.google.com/finance/quote/MXRF11:BVMF,fii
+BTC,https://www.google.com/finance/quote/BTC-BRL,cripto
