@@ -3,23 +3,29 @@ import requests
 from Funções import Tratamento_de_strings, csv, Horarios, moeda
 
 class conexão:
+
     def __init__(self):
 
         lista_de_url = []
+        lista_de_ticker = []
         arquivo = csv()
         ler = arquivo.ler_csv(r"csv/url.csv", "url")
+        Ticker = arquivo.ler_csv(r"csv/url.csv", "codigo")
         
 
         for url in ler:
             lista_de_url.append(url)
         
+        for ticker in Ticker:
+            lista_de_ticker.append(ticker)
+        
         cont = 0
         for c in range(0,len(lista_de_url)):
             tipo = arquivo.tipo(r"csv/url.csv", "url", lista_de_url[cont], "cod")
-            self.main(lista_de_url[cont], str(tipo))
+            self.main(lista_de_url[cont], str(tipo), lista_de_ticker[cont])
             cont += 1
             
-    def main(self, url, tipo):
+    def main(self, url, tipo, Ticker, show=False):
 
         parametros = {
             "-1": lambda cotação, código, variações, rendimento_atual, equivalente: f"""
@@ -35,15 +41,19 @@ class conexão:
             A cotação atual é {cotação} de {código} e as variações do dia foram entre {variações}.
             """
         }
-
+        Csv = csv()
         try:
-            CSV = csv()
+            
             Valor = moeda()
             tempo = Horarios()
             data = tempo.data_atual()
             hora = tempo.hora_atual()
 
-            self.resposta = requests.get(url)
+            try:
+                self.resposta = requests.get(url)
+            except:
+                Csv.escrever_csv("Url inválida", r"csv/erros.csv", "a")
+
             tratamento = Tratamento_de_strings()
 
             if self.resposta.status_code == 200:
@@ -51,7 +61,7 @@ class conexão:
                     soup = BeautifulSoup(self.resposta.text, "html.parser")
                     cotação = soup.select_one("div.YMlKec.fxKbKc")
                     self.cotação = Valor.formatar_moeda(tratamento.tratar_dados_de_url(cotação))
-                    self.código = url[37:42]
+                    self.código = Ticker
                     self.rendimento = None
                     self.variações = None
                     self.equivalente = None
@@ -62,19 +72,20 @@ class conexão:
                         self.variações = tratamento.tratar_dados_de_url(variação_do_preço[2])
                         self.equivalente = tratamento.tratar_valores_url(cotação, rendimentos)
 
-                if str(tipo) in parametros:
+                if str(tipo) in parametros and show == True:
                     print(parametros[tipo](cotação=self.cotação, código=self.código,
                                            variações=self.variações, rendimento_atual=self.rendimento,
                                            equivalente=self.equivalente))
 
-                CSV.escrever_csv(conteudo=(self.código, self.cotação,
+                Csv.escrever_csv(conteudo=(self.código, self.cotação,
                                            hora, data),
                                  nome=r"csv/dados_das_cotações.csv", tipo="a"
                                            )
+        except (ValueError, TypeError) as e:
+            Csv.escrever_csv(conteudo=f"Erro do tipo: {e}", nome=r"erros.csv", tipo="a")
+
         except Exception as e:
-            print("Erro inesperado: ", e)
-        except:
-            print("Erro, url inválida!")
+            Csv.escrever_csv(conteudo=f"Erro inesperado: {e}", nome=r"erros.csv", tipo="a")
 
     def tipo_de_ativo(self, url):
         pontos = str(url[40:])

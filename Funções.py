@@ -267,10 +267,13 @@ class csv:
     pass
   def escrever_csv(self, conteudo=str(), nome="arquivo.csv",
                    tipo="w"):
-    texto = str(conteudo)
-    texto_tratado = texto.replace("(", "").replace(")","").replace("'","")
-    with open(nome, tipo) as file:
-      file.write(f"{texto_tratado}\n")
+    try:
+      texto = str(conteudo)
+      texto_tratado = texto.replace("(", "").replace(")","").replace("'","")
+      with open(nome, tipo) as file:
+        file.write(f"{texto_tratado}\n")
+    except:
+      print("erro")
   
   def ler_csv(self, nome, coluna):
     self.df = pd.read_csv(nome, encoding="latin1")
