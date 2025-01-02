@@ -266,7 +266,7 @@ class csv:
   def __init__(self):
     pass
   def escrever_csv(self, conteudo=str(), nome="arquivo.csv",
-                   tipo="w"):
+                   tipo="w", separador=";"):
     try:
       texto = str(conteudo)
       texto_tratado = texto.replace("(", "").replace(")","").replace("'","")
@@ -275,31 +275,34 @@ class csv:
     except:
       print("erro")
   
-  def ler_csv(self, nome, coluna):
-    self.df = pd.read_csv(nome, encoding="latin1")
+  def ler_csv(self, nome, coluna, separador=","):
+    self.df = pd.read_csv(nome, encoding="latin1", sep=separador)
     
     return self.df[coluna]
   
   def tipo(self, nome, coluna, igual, tipo):
-    df = pd.read_csv(nome, encoding="latin1")
-    return df.loc[df[coluna] == igual, tipo].item()
+    try:
+      df = pd.read_csv(nome, encoding="latin1")
+      return df.loc[df[coluna] == igual, tipo].item()
+    except:
+      return 0
 
 class moeda:
   def __init__(self):
     pass
 
   def formatar_moeda(self, valor):
-    moeda = str(valor).replace(".", ",")
-
-    if len(valor) > 7:
+    moeda = str(valor)
+    if len(valor) > 8:
+      moeda = str(valor).replace(".", ",")
       virgula = moeda.find(",")
       ponto = "."
       repartir = virgula - 3
       return "R$" + moeda[:repartir] + ponto + moeda[repartir:]
     
     else:
-      return moeda.replace(".", ",")
+      return moeda
     
 if __name__ == "__main__":
-  moed = moeda()
-  print(moed.formatar_moeda("668226,43"))
+  csc = csv()
+  csc.ler_csv("csv/fundosListados.csv", "ticker")

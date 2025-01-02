@@ -6,7 +6,7 @@ from Funções import csv
 class Scraping:
     def __init__(self, link="https://www.google.com/finance/quote/PETR4:BVMF"):
         self.csv = csv()
-        ativos = self.csv.ler_csv(r"csv/acoes-listadas-b3.csv","Ticker")
+        ativos = self.csv.ler_csv(r"csv/fundosListados.csv","Ticker", ";")
         lista = []
         for ativo in ativos:
             lista.append(ativo)
@@ -28,10 +28,12 @@ class Scraping:
         try:
             barra_de_busca = driver.find_element(By.CLASS_NAME, "Ax4B8.ZAGvjd")
 
-            sleep(2)
+            sleep(1)
             barra_de_busca.click()
-
+            sleep(1)
             barra_de_busca.clear()
+
+            Ticker += "11"
 
             barra_de_busca.send_keys(Ticker)
 
@@ -40,7 +42,7 @@ class Scraping:
 
             sleep(2)
             url = driver.current_url
-            self.csv.escrever_csv(conteudo=(Ticker,url,"bdr","2"), nome=r"csv/url.csv", tipo="a")
+            self.csv.escrever_csv(conteudo=(Ticker,url,"fii","3"), nome=r"csv/url.csv", tipo="a")
 
 
         except Exception as e:

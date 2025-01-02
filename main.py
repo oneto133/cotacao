@@ -11,8 +11,6 @@ class conexão:
         arquivo = csv()
         ler = arquivo.ler_csv(r"csv/url.csv", "url")
         Ticker = arquivo.ler_csv(r"csv/url.csv", "codigo")
-        
-
         for url in ler:
             lista_de_url.append(url)
         
@@ -77,8 +75,8 @@ class conexão:
                                            variações=self.variações, rendimento_atual=self.rendimento,
                                            equivalente=self.equivalente))
 
-                Csv.escrever_csv(conteudo=(self.código, self.cotação,
-                                           hora, data),
+                Csv.escrever_csv(conteudo=(f'"{self.código}", "{self.cotação}",'
+                                           f'"{hora}", "{data}"'),
                                  nome=r"csv/dados_das_cotações.csv", tipo="a"
                                            )
         except (ValueError, TypeError) as e:
@@ -94,3 +92,9 @@ class conexão:
 
 if __name__ == "__main__":
     conn = conexão()
+    """tempo = Horarios()
+    hora = tempo.hora_atual()
+    if int(hora[:2])>= 18:
+        print("maior")
+    else:
+        print("menor")"""
