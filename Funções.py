@@ -287,13 +287,24 @@ class csv:
     except:
       return 0
 
+  def preço_zerado(self, arquivo, destino, coluna="preco", igual=0, coluna_retorno="codigo"):
+    
+    df = pd.read_csv(arquivo, encoding="latin1")
+
+    df[coluna] = df[coluna].str.replace("R\$", "", regex=True).str.replace(",", ".").str.replace('"', "").astype(float)
+
+    ativo_zerado = df.loc[df[coluna] == igual, coluna_retorno]
+
+    for valor in ativo_zerado:
+        self.escrever_csv(nome=destino, conteudo=valor, tipo="a", separador=",")
+
 class moeda:
   def __init__(self):
     pass
 
   def formatar_moeda(self, valor):
     moeda = str(valor)
-    if len(valor) > 8:
+    if len(valor) > 20:
       moeda = str(valor).replace(".", ",")
       virgula = moeda.find(",")
       ponto = "."

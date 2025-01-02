@@ -1,6 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
 from Funções import Tratamento_de_strings, csv, Horarios, moeda
+from enviar_email import enviar_mensagem
+import traceback
+from time import sleep
 
 class conexão:
 
@@ -49,6 +52,15 @@ class conexão:
 
             try:
                 self.resposta = requests.get(url)
+                self.resposta.raise_for_status()
+            except requests.exceptions.HTTPError as e:
+                print("Erro HTTP:", e)
+            except requests.exceptions.ConnectionError:
+                print("Erro de conexão. Verifique a URL ou sua conexão.")
+            except requests.exceptions.Timeout:
+                print("A requisição expirou. O servidor pode estar lento ou indisponível.")
+            except requests.exceptions.RequestException as e:
+                print("Erro ao fazer a requisição:", e)
             except:
                 Csv.escrever_csv("Url inválida", r"csv/erros.csv", "a")
 
@@ -91,10 +103,38 @@ class conexão:
         return número
 
 if __name__ == "__main__":
-    conn = conexão()
-    """tempo = Horarios()
-    hora = tempo.hora_atual()
-    if int(hora[:2])>= 18:
-        print("maior")
-    else:
-        print("menor")"""
+    
+    try:
+        while True:
+            tempo = Horarios()
+            hora = tempo.hora_atual()
+            if int(hora[:2]) < 10 or int(hora[:2]) > 18:
+                if int(hora[:2]) < 10:
+                    tempo = 10 - int(hora[:2])
+                    tempo = int(tempo) * 30 * 60
+                    print("Fora do horário de negociações, tentarei novamente em breve...")
+                    sleep(tempo)
+                else:
+                    tempo = 5 * 30 * 60
+                    print("Fora do horário de negociações, tentarei novamente em breve...")
+                    sleep(tempo)
+                
+            else:
+                conn = conexão()
+    except KeyboardInterrupt:
+        print("Finalizado pelo usuário")
+        enviar_mensagem(titulo="Programa finalizado!", mensagem=f"""
+Olá, senhor Neto, aqui é seu assistente, o seu programa foi finalizado pelo usuário.
+Vou tentar anexar o traceback nesse e-mail, espero que seja possível vê-lo... 
+"{traceback.format_exc()}"
+
+""", mensagem_final="Atenciosamente, M.I.A.S.M!")
+    except:
+        print("Ocorreu um erro, vamos finalizando o programa")
+
+        enviar_mensagem(titulo="Programa finalizado!", mensagem=f"""
+Olá, senhor Neto, aqui é seu assistente, o seu programa foi finalizado por algum erro.
+Vou tentar anexar o erro nesse e-mail, espero que seja possível vê-lo... 
+"{traceback.format_exc()}"
+
+""", mensagem_final="Atenciosamente, M.I.A.S.M!")
