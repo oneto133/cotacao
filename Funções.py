@@ -289,7 +289,7 @@ class csv:
 
   def preço_zerado(self, arquivo, destino, coluna="preco", igual=0, coluna_retorno="codigo"):
     
-    df = pd.read_csv(arquivo, encoding="latin1")
+    df = pd.read_csv("csv/dados_das_cotações.csv", encoding="latin1")
 
     df[coluna] = df[coluna].str.replace("R\$", "", regex=True).str.replace(",", ".").str.replace('"', "").astype(float)
 

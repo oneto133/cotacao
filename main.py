@@ -75,12 +75,14 @@ class conexão:
                     self.rendimento = None
                     self.variações = None
                     self.equivalente = None
+                    self.ultimo_preço = None
                     if tipo == "2" or tipo == "3":
                         variação_do_preço = soup.select("div.P6K39c")
                         rendimentos = variação_do_preço[6]
                         self.rendimento = tratamento.tratar_dados_de_url(rendimentos)
-                        self.variações = tratamento.tratar_dados_de_url(variação_do_preço[2])
+                        self.variações = tratamento.tratar_dados_de_url(variação_do_preço[1])
                         self.equivalente = tratamento.tratar_valores_url(cotação, rendimentos)
+                        self.ultimo_preço = tratamento.tratar_dados_de_url(variação_do_preço[0])
 
                 if str(tipo) in parametros and show == True:
                     print(parametros[tipo](cotação=self.cotação, código=self.código,
@@ -88,7 +90,7 @@ class conexão:
                                            equivalente=self.equivalente))
 
                 Csv.escrever_csv(conteudo=(f'"{self.código}", "{self.cotação}",'
-                                           f'"{hora}", "{data}"'),
+                                           f'"{hora}", "{data}", "{self.variações}"'),
                                  nome=r"csv/dados_das_cotações.csv", tipo="a"
                                            )
         except (ValueError, TypeError) as e:
@@ -108,7 +110,8 @@ if __name__ == "__main__":
         while True:
             tempo = Horarios()
             hora = tempo.hora_atual()
-            if int(hora[:2]) < 10 or int(hora[:2]) > 18:
+            print(hora)
+            """"if int(hora[:2]) < 10 or int(hora[:2]) > 18:
                 if int(hora[:2]) < 10:
                     tempo = 10 - int(hora[:2])
                     tempo = int(tempo) * 30 * 60
@@ -119,8 +122,8 @@ if __name__ == "__main__":
                     print("Fora do horário de negociações, tentarei novamente em breve...")
                     sleep(tempo)
                 
-            else:
-                conn = conexão()
+            else:"""
+            conn = conexão()
     except KeyboardInterrupt:
         print("Finalizado pelo usuário")
         enviar_mensagem(titulo="Programa finalizado!", mensagem=f"""
