@@ -111,7 +111,7 @@ if __name__ == "__main__":
             tempo = Horarios()
             hora = tempo.hora_atual()
             print(hora)
-            """"if int(hora[:2]) < 10 or int(hora[:2]) > 18:
+            if int(hora[:2]) < 10 or int(hora[:2]) > 18:
                 if int(hora[:2]) < 10:
                     tempo = 10 - int(hora[:2])
                     tempo = int(tempo) * 30 * 60
@@ -122,8 +122,8 @@ if __name__ == "__main__":
                     print("Fora do horário de negociações, tentarei novamente em breve...")
                     sleep(tempo)
                 
-            else:"""
-            conn = conexão()
+            else:
+                conn = conexão()
     except KeyboardInterrupt:
         print("Finalizado pelo usuário")
         enviar_mensagem(titulo="Programa finalizado!", mensagem=f"""
