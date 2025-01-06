@@ -65,14 +65,15 @@ class dados():
                 pass
             else:
                 valor = "+" + str(valor)[:4]
-            print(f"R${valor}", end=", ")
+            print(f"R${float(valor):.2f}", end=", ")
         print("")
 
         print(f"Preço médio: ")
-        print(f"R${preço_medio}, valor mínimo no período R${min(lista)}, máxima do periodo R${max(lista)}")
+        print(f"R${preço_medio}, valor mínimo no período R${min(lista):.2f}, máxima do periodo R${max(lista)}")
         print(f"Ultimo valor {lista[-1]}")
 
 
 if __name__ == "__main__":
-    dados(data_final="02/01/2025", data_inicial="02/01/2025", codigo="PETR4")
+    dados(data_final="05/01/2025", data_inicial="01/01/2025", codigo="PETR3")
+
  

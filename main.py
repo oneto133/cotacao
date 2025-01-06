@@ -123,12 +123,14 @@ if __name__ == "__main__":
                     sleep(tempo)
                 
             else:
+                
                 conn = conexão()
+                print("Funcionando normal")
     except KeyboardInterrupt:
         print("Finalizado pelo usuário")
         enviar_mensagem(titulo="Programa finalizado!", mensagem=f"""
 Olá, senhor Neto, aqui é seu assistente, o seu programa foi finalizado pelo usuário.
-Vou tentar anexar o traceback nesse e-mail, espero que seja possível vê-lo... 
+Vou tentar anexar o traceback nesse e-mail, espero que seja possível vê-lo... \n \n \n \n                        
 "{traceback.format_exc()}"
 
 """, mensagem_final="Atenciosamente, M.I.A.S.M!")
