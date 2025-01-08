@@ -246,19 +246,26 @@ class Tratamento_de_strings:
     os valores qye vem pra cá são tirados de uma url usando a class div, então com o text
     eu obtenho só o resultado exibido na url
     """
-    texto = str(texto_a_tratar.text.split())
+    try:
+      texto = str(texto_a_tratar.text.split())
+    except:
+      texto = str(texto_a_tratar)
+
     texto_sem_aspas = texto.replace("'", "").replace(",", "")
     texto_tratado = texto_sem_aspas[1:-1]
     return texto_tratado
   
   def tratar_valores_url(self, valor, porcentagem):
     """"
-    essa função apenas faz um claculo de porcentagem para mim utilizando de outra função que tem nessa classe
+    essa função apenas faz um calculo de porcentagem para mim utilizando de outra função que tem nessa classe
     eu apenas to salvando essas funções aqui, para que eu possa organizar meu código principal e caso eu precise
     de apoio no futuro.
     """
-    preço = float(self.tratar_dados_de_url(valor)[2:])
-    divisor = float(self.tratar_dados_de_url(porcentagem)[:-1])
+    try:
+      preço = float(self.tratar_dados_de_url(valor)[2:])
+      divisor = float(self.tratar_dados_de_url(porcentagem)[:-1])
+    except:
+      return "Erro"
     resultado = preço * (divisor / 100)
     return resultado
 

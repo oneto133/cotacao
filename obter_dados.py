@@ -74,6 +74,6 @@ class dados():
 
 
 if __name__ == "__main__":
-    dados(data_final="05/01/2025", data_inicial="01/01/2025", codigo="PETR3")
+    dados(data_final="06/01/2025", data_inicial="01/01/2025", codigo="GFSA3")
 
  

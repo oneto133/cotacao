@@ -1,5 +1,4 @@
 codigo,url,tipo,cod
-HAPV3, https://www.google.com/finance/quote/HAPV3:BVMF, bdr,2
 B3SA3, https://www.google.com/finance/quote/B3SA3:BVMF, bdr,2
 CVCB3, https://www.google.com/finance/quote/CVCB3:BVMF, bdr,2
 ABEV3, https://www.google.com/finance/quote/ABEV3:BVMFX, bdr,2
@@ -852,3 +851,4 @@ ZAGH11, https://www.google.com/finance/quote/ZAGH11:BVMF, fii,3
 ZAVC11, https://www.google.com/finance/quote/ZAVC11:BVMF, fii,3
 ZAVI11, https://www.google.com/finance/quote/ZAVI11:BVMF, fii,3
 ZIFI11, https://www.google.com/finance/quote/ZIFI11:BVMF, fii,3
+GFSA3, https://www.google.com/finance/quote/GFSA3:BVMF, bdr,2

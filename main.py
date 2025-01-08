@@ -78,9 +78,16 @@ class conexão:
                     self.ultimo_preço = None
                     if tipo == "2" or tipo == "3":
                         variação_do_preço = soup.select("div.P6K39c")
-                        rendimentos = variação_do_preço[6]
+                        try:
+                            rendimentos = variação_do_preço[6]
+                            self.variações = tratamento.tratar_dados_de_url(variação_do_preço[1])
+                            self.ultimo_preço = tratamento.tratar_dados_de_url(variação_do_preço[0])
+
+                        except:
+                            rendimentos = "Sem dados"
+                            self.variações  = "Sem dados"
+                            self.ultimo_preço = "Sem dados ou Erro!"
                         self.rendimento = tratamento.tratar_dados_de_url(rendimentos)
-                        self.variações = tratamento.tratar_dados_de_url(variação_do_preço[1])
                         self.equivalente = tratamento.tratar_valores_url(cotação, rendimentos)
                         self.ultimo_preço = tratamento.tratar_dados_de_url(variação_do_preço[0])
 
@@ -111,7 +118,7 @@ if __name__ == "__main__":
             tempo = Horarios()
             hora = tempo.hora_atual()
             print(hora)
-            if int(hora[:2]) < 10 or int(hora[:2]) > 18:
+            if int(hora[:2]) < 10 or int(hora[:2]) >= 18:
                 if int(hora[:2]) < 10:
                     tempo = 10 - int(hora[:2])
                     tempo = int(tempo) * 30 * 60
@@ -123,9 +130,9 @@ if __name__ == "__main__":
                     sleep(tempo)
                 
             else:
-                
-                conn = conexão()
                 print("Funcionando normal")
+                conn = conexão()
+                
     except KeyboardInterrupt:
         print("Finalizado pelo usuário")
         enviar_mensagem(titulo="Programa finalizado!", mensagem=f"""
