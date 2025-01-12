@@ -25,7 +25,7 @@ class conexão:
             tipo = arquivo.tipo(r"csv/url.csv", "url", lista_de_url[cont], "cod")
            # self.main(lista_de_url[cont], str(tipo), lista_de_ticker[cont])
             cont += 1
-        self.main(url="https://www.google.com/finance/quote/PETR4:BVMF", Ticker="PETR4", tipo="2")
+        self.main(url="https://www.google.com/finance/quote/ENGI11:BVMF", Ticker="ENGI11", tipo="3")
             
     def main(self, url, tipo, Ticker, show=False):
 
@@ -65,7 +65,7 @@ class conexão:
                 print("Erro ao fazer a requisição:", e)
             except:
                 Csv.escrever_csv("Url inválida", r"csv/erros.csv", "a")
-
+            
             tratamento = Tratamento_de_strings()
 
             if self.resposta.status_code == 200:
@@ -81,18 +81,20 @@ class conexão:
                     self.ultimo_preço = None
                     if tipo == "2" or tipo == "3":
                         variação_do_preço = soup.select("div.P6K39c")
+                        
                         try:
                             rendimentos = variação_do_preço[6]
                             self.variações = tratamento.tratar_dados_de_url(variação_do_preço[1])
                             self.ultimo_preço = tratamento.tratar_dados_de_url(variação_do_preço[0])
-
+                            
                         except:
                             rendimentos = "Sem dados"
                             self.variações  = "Sem dados"
                             self.ultimo_preço = "Sem dados ou Erro!"
+                            print("AConteceu um erro aqui")
                         self.rendimento = tratamento.tratar_dados_de_url(rendimentos)
                         self.equivalente = tratamento.tratar_valores_url(cotação, rendimentos)
-
+                        print(".")
                 if str(tipo) in parametros and show == True:
                     print(parametros[tipo](cotação=self.cotação, código=self.código,
                                            variações=self.variações, rendimento_atual=self.rendimento,

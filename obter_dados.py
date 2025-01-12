@@ -1,7 +1,7 @@
 import pandas as pd
 
 class dados():
-    def __init__(self, codigo="B3SA3", data_inicial=str(), data_final=str(), arquivo="csv/dados_das_cotações.csv"):
+    def __init__(self, codigo="MXRF11", data_inicial=str(), data_final=str(), arquivo="csv/dados_das_cotações.csv"):
       
         self.df = pd.read_csv(arquivo, encoding="latin1")
 
@@ -74,6 +74,6 @@ class dados():
 
 
 if __name__ == "__main__":
-    dados(data_final="06/01/2025", data_inicial="01/01/2025", codigo="GFSA3")
+    dados(data_final="10/01/2025", data_inicial="01/01/2025", codigo="MXRF11")
 
  
