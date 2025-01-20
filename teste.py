@@ -1,25 +1,18 @@
-import json
-
-def lambda_to_str(func):
-    return func.__code__.co_code
+import cloudpickle
+import traceback
 
 
+dicionario = {
+    "Finalizado": "Programa finalizado pelo usuário",
+    "mensagem_finalizado": f"""Olá, senhor Neto, aqui é seu assistente, o seu programa foi finalizado pelo usuário.
+Vou tentar anexar o traceback nesse e-mail, espero que seja possível vê-lo... \n \n \n \n
+""",
+    "mensagem final": "Atenciosamente, M.I.A.S.M!",
+    "Erro": "Ocorreu um erro na execução do programa",
+    "mensagem_erro": f"""Olá, senhor Neto, aqui é seu assistente, o seu programa foi finalizado por algum erro.
+Vou tentar anexar o erro nesse e-mail, espero que seja possível vê-lo... 
+"""
+}
 
-parametros = {
-            "-1": lambda cotação, código, variações, rendimento_atual, equivalente: f"""
-            Cotação atual: {cotação} para {código}.
-            Sem mais informações sobre a moeda.
-            """,
-            "2": lambda cotação, código, variações, rendimento_atual, equivalente: f"""
-            A cotação atual é {cotação} o código da moeda é {código}.
-            No dia de hoje a moeda ficou entre {variações}.
-            O rendimento atual é {rendimento_atual}, isso equivale a R${equivalente:.2f} de lucro.
-            """,
-            "3": lambda cotação, código, variações, rendimento_atual, equivalente: f"""
-            A cotação atual é {cotação} de {código} e as variações do dia foram entre {variações}.
-            """
-        }   
-
-dicionario_serializado = {k: {'func_str': str(v)} for k, v in parametros.items()}
-with open("parametros.json", "w") as file:
-    json.dump(dicionario_serializado, file, indent=4)
+with open("pkl/mensagem_email.pkl", "wb") as file:
+    cloudpickle.dump(dicionario, file)

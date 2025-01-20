@@ -89,18 +89,29 @@ class dados():
         else:
             pass
             # print(f"Acima média R${valor:.2f}")
-
+class main:
+    def __init__(self, Unitário=bool, Vários=bool):
+        if Unitário:
+            self.unitário()
+        elif Vários:
+            self.todos()
+            
+    def unitário(self):
+        dados(data_final="17/01/2025", data_inicial="01/01/2025", codigo="MXRF11")
+        
+    def todos(self):
+        arquivo = csv()
+        ticker = arquivo.ler_csv("csv/dados_das_cotações.csv", "codigo", ",")
+        codigo = []
+    
+        for valor in ticker:
+            codigo.append(valor)
+            print(valor)
+            #Falta alterar#############################################################
+            dados(data_final="17/01/2025", data_inicial="01/01/2025", codigo=valor)
+            
 
 if __name__ == "__main__":
-    arquivo = csv()
-    ticker = arquivo.ler_csv("csv/dados_das_cotações.csv", "codigo", ",")
-    codigo = []
-    
-    for valor in ticker:
-        codigo.append(valor)
-        print(valor)
-        #Falta alterar#############################################################
-        dados(data_final="14/01/2025", data_inicial="01/01/2025", codigo=valor)
-        
+    main(Unitário=True)
 
  

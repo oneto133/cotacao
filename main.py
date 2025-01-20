@@ -8,6 +8,7 @@ import cloudpickle
 
 class conexão(csv, Tratamento_de_strings, Horarios, moeda):
     def __init__(self):
+
         super().__init__()
         lista_de_url = []
         lista_de_ticker = []
@@ -81,13 +82,11 @@ class conexão(csv, Tratamento_de_strings, Horarios, moeda):
         except Exception as e:
             self.escrever_csv(conteudo=f"Erro inesperado: {e}", nome=r"erros.csv", tipo="a")
 
-
-if __name__ == "__main__":
-    
-    try:
+class main(Horarios):
+    def __init__(self):
+        super().__init__()
         while True:
-            tempo = Horarios()
-            hora = tempo.hora_atual()
+            hora = self.hora_atual()
             print(hora)
             if int(hora[:2]) < 10 or int(hora[:2]) >= 18:
                 if int(hora[:2]) < 10:
@@ -102,22 +101,22 @@ if __name__ == "__main__":
                 
             else:
                 print("Funcionando normal")
-                conn = conexão()
+                conexão()
+
+
+if __name__ == "__main__":
+    with open(r"pkl/mensagem_email.pkl", "rb") as file:
+        dados = cloudpickle.load(file)
+    try:
+        main()
                 
     except KeyboardInterrupt:
         print("Finalizado pelo usuário")
-        enviar_mensagem(titulo="Programa finalizado!", mensagem=f"""
-Olá, senhor Neto, aqui é seu assistente, o seu programa foi finalizado pelo usuário.
-Vou tentar anexar o traceback nesse e-mail, espero que seja possível vê-lo... \n \n \n \n                        
-"{traceback.format_exc()}"
-
-""", mensagem_final="Atenciosamente, M.I.A.S.M!")
+        enviar_mensagem(titulo=dados["Finalizado"], mensagem=(dados["mensagem_finalizado"], traceback.format_exc()),
+                         mensagem_final=dados["mensagem final"] )
     except:
         print("Ocorreu um erro, vamos finalizando o programa")
 
-        enviar_mensagem(titulo="Programa finalizado!", mensagem=f"""
-Olá, senhor Neto, aqui é seu assistente, o seu programa foi finalizado por algum erro.
-Vou tentar anexar o erro nesse e-mail, espero que seja possível vê-lo... 
-"{traceback.format_exc()}"
+        enviar_mensagem(titulo=dados["Erro"], mensagem=(dados["mensagem_erro"], traceback.format_exc()),
+                        mensagem_final=dados["mensagem final"])
 
-""", mensagem_final="Atenciosamente, M.I.A.S.M!")
