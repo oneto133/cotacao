@@ -25,10 +25,6 @@ class conexão(csv, Tratamento_de_strings, Horarios, moeda):
             cont += 1
 
     def main(self, url, tipo, Ticker, show=False):
-
-        with open(r"pkl/parametros.pkl", "rb") as file:
-            parametros = cloudpickle.load(file)
-
         try:
             data = self.data_atual()
             hora = self.hora_atual()
@@ -59,8 +55,10 @@ class conexão(csv, Tratamento_de_strings, Horarios, moeda):
                         self.rendimento = self.tratar_dados_de_url(rendimentos)
                         self.equivalente = self.tratar_valores_url(cotação, rendimentos)
                         self.ultimo_preço = self.tratar_dados_de_url(variação_do_preço[0])
-
+                parametros = [-1, 2, 3]
                 if str(tipo) in parametros and show == True:
+                    with open(r"pkl/parametros.pkl", "rb") as file:
+                        parametros = cloudpickle.load(file)
                     print(parametros[tipo](cotação=self.cotação, código=self.código,
                                            variações=self.variações, rendimento_atual=self.rendimento,
                                            equivalente=self.equivalente))
@@ -105,16 +103,18 @@ class main(Horarios):
 
 
 if __name__ == "__main__":
-    with open(r"pkl/mensagem_email.pkl", "rb") as file:
-        dados = cloudpickle.load(file)
     try:
         main()
                 
     except KeyboardInterrupt:
+        with open(r"pkl/mensagem_email.pkl", "rb") as file:
+            dados = cloudpickle.load(file)
         print("Finalizado pelo usuário")
         enviar_mensagem(titulo=dados["Finalizado"], mensagem=(dados["mensagem_finalizado"], traceback.format_exc()),
                          mensagem_final=dados["mensagem final"] )
     except:
+        with open(r"pkl/mensagem_email.pkl", "rb") as file:
+            dados = cloudpickle.load(file)
         print("Ocorreu um erro, vamos finalizando o programa")
 
         enviar_mensagem(titulo=dados["Erro"], mensagem=(dados["mensagem_erro"], traceback.format_exc()),
