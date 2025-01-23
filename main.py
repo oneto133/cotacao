@@ -10,6 +10,7 @@ class conexão(csv, Tratamento_de_strings, Horarios, moeda):
     def __init__(self):
 
         super().__init__()
+        self.ultimo = []
         lista_de_url = []
         lista_de_ticker = []
         ler = self.ler_csv(r"csv/url.csv", "url")
@@ -18,11 +19,18 @@ class conexão(csv, Tratamento_de_strings, Horarios, moeda):
             lista_de_url.append(url)
         for ticker in Ticker:
             lista_de_ticker.append(ticker)
+
         cont = 0
+
         for c in range(0,len(lista_de_url)):
-            tipo = self.tipo(r"csv/url.csv", "url", lista_de_url[cont], "cod")
-            self.main(lista_de_url[cont], str(tipo), lista_de_ticker[cont])
-            cont += 1
+            if self.ultimo[-1] == lista_de_ticker[cont]:
+                continue
+            else:
+                self.ultimo.append(lista_de_ticker[cont])
+                tipo = self.tipo(r"csv/url.csv", "url", lista_de_url[cont], "cod")
+                self.main(lista_de_url[cont], str(tipo), lista_de_ticker[cont])
+                cont += 1
+            
 
     def main(self, url, tipo, Ticker, show=False):
         try:
@@ -62,11 +70,11 @@ class conexão(csv, Tratamento_de_strings, Horarios, moeda):
                     print(parametros[tipo](cotação=self.cotação, código=self.código,
                                            variações=self.variações, rendimento_atual=self.rendimento,
                                            equivalente=self.equivalente))
-
                 self.escrever_csv(conteudo=(f'"{self.código}", "{self.cotação}",'
                                            f'"{hora}", "{data}", "{self.variações}"'),
                                  nome=r"csv/dados_das_cotações.csv", tipo="a"
                                            )
+                
         except (ValueError, TypeError) as e:
             self.escrever_csv(conteudo=f"Erro do tipo: {e}", nome=r"erros.csv", tipo="a")
         except requests.exceptions.HTTPError as e:
@@ -101,7 +109,6 @@ class main(Horarios):
                 print("Funcionando normal")
                 conexão()
 
-
 if __name__ == "__main__":
     try:
         main()
@@ -119,4 +126,3 @@ if __name__ == "__main__":
 
         enviar_mensagem(titulo=dados["Erro"], mensagem=(dados["mensagem_erro"], traceback.format_exc()),
                         mensagem_final=dados["mensagem final"])
-
