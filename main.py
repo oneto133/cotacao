@@ -10,7 +10,7 @@ class conexão(csv, Tratamento_de_strings, Horarios, moeda):
     def __init__(self):
 
         super().__init__()
-        self.ultimo = []
+        self.ultimo = ["Teste"]
         lista_de_url = []
         lista_de_ticker = []
         ler = self.ler_csv(r"csv/url.csv", "url")

@@ -78,7 +78,7 @@ class main:
     
         for valor in ticker:
             codigo.append(valor)
-            dados(data_final="22/01/2025", data_inicial="01/01/2025", codigo=valor)
+            dados(data_final="23/01/2025", data_inicial="01/01/2025", codigo=valor)
             
 
 if __name__ == "__main__":
