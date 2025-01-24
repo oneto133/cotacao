@@ -61,15 +61,16 @@ class dados():
             pass
             # print(f"Acima média R${valor:.2f}")
 class main:
-    def __init__(self, Unitário=False, Vários=False):
+    def __init__(self, Unitário=False, Vários=False, código=str()):
         if Unitário:
+            self.código = código
             self.unitário()
+            
         elif Vários:
             self.todos()
             
     def unitário(self):
-        print("Aqui")
-        dados(data_final="17/01/2025", data_inicial="01/01/2025", codigo="MXRF11")
+        dados(data_final="17/01/2025", data_inicial="01/01/2025", codigo=self.código)
         
     def todos(self):
         arquivo = csv()
@@ -78,10 +79,10 @@ class main:
     
         for valor in ticker:
             codigo.append(valor)
-            dados(data_final="23/01/2025", data_inicial="01/01/2025", codigo=valor)
+            dados(data_final="24/01/2025", data_inicial="01/01/2025", codigo=valor)
             
 
 if __name__ == "__main__":
-    main(Vários=True)
+    main(Unitário=True, código="PETR3")
 
  
