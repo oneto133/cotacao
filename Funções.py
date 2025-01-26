@@ -305,6 +305,16 @@ class csv:
     for valor in ativo_zerado:
         self.escrever_csv(nome=destino, conteudo=valor, tipo="a", separador=",")
 
+  def Ticker(self, tipo):
+    df = pd.read_csv("csv/url.csv", encoding="latin1")
+
+    ticker = df.loc[df["tipo"] == f" {tipo}", "codigo"]
+    return ticker
+  def url(self, tipo):
+    df = pd.read_csv("csv/url.csv", encoding="latin1")
+
+    ticker = df.loc[df["tipo"] == f" {tipo}", "url"]
+    return ticker
 class moeda:
   def __init__(self):
     pass
@@ -323,4 +333,6 @@ class moeda:
     
 if __name__ == "__main__":
   csc = csv()
-  csc.ler_csv("csv/fundosListados.csv", "ticker")
+  dado = csc.url("fii")
+  for valor in dado:
+    print(valor)

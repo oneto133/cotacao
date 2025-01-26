@@ -344,7 +344,7 @@ CEEB5, https://www.google.com/finance/quote/CEEB5:BVMF, bdr,2
 MRSA6B, https://www.google.com/finance/quote/MRSA6B:BVMF, bdr,2
 BAUH4, https://www.google.com/finance/quote/BAUH4:BVMF, bdr,2
 petr4,https://www.google.com/finance/quote/PETR4:BVMF,bdr,2
-MXRF11,https://www.google.com/finance/quote/MXRF11:BVMF,fii,3
+MXRF11,https://www.google.com/finance/quote/MXRF11:BVMF, fii,3
 BTC,https://www.google.com/finance/quote/BTC-BRL,cripto,-1
 AFHI11, https://www.google.com/finance/quote/AFHI11:BVMF, fii,3
 AJFI11, https://www.google.com/finance/quote/AJFI11:BVMF, fii,3
