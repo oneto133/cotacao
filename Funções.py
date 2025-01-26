@@ -13,8 +13,9 @@ except:
   from string import ascii_uppercase, ascii_lowercase
   from datetime import datetime
   import pandas as pd
+  from datetime import date
 
-class Horarios:
+class Tempo:
   def hora(self):
     '''
     Formatting the time because when using the datetime, it was getting a different time zone
@@ -58,6 +59,16 @@ class Horarios:
   def data_atual(self):
     agora = datetime.now()
     return agora.strftime("%d/%m/%Y")
+  
+  def Dias_da_semana(self, indice=bool):
+    hoje = date.today()
+    dia_da_semana = hoje.weekday()
+    dias_da_semana = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
+    if indice:
+      return dia_da_semana
+    else:
+      return dias_da_semana[dia_da_semana]
+
 
 class Funcao():
   def __init__(self):
@@ -166,6 +177,9 @@ class Funcao():
     
     return valor
 
+
+class Arquivo():
+
   def Verificar_se_existe_o_arquivo(self, arquivo):
       '''Vai na memóriado sistema operacional buscar o arquivo com o caminho fornecido, se o caminho existir, 
     retorna que sim, se não, retorna que não'''
@@ -219,6 +233,16 @@ class Funcao():
     except Exception as e:
       return e
 
+  def excluir(self, caminho):
+    try:
+      os.remove(caminho)
+      return "Arquivo removido com sucesso!"
+    except FileNotFoundError:
+      return "Arquivo não encontrado"
+    except PermissionError:
+      return "Não permitido pelo sistema!"
+    except OSError as e:
+      return f"Erro: {e}"
 class Graficos:
   def __init__(self):
     pass
@@ -332,7 +356,5 @@ class moeda:
       return moeda
     
 if __name__ == "__main__":
-  csc = csv()
-  dado = csc.url("fii")
-  for valor in dado:
-    print(valor)
+  tempo = Tempo()
+  print(tempo.Dias_da_semana(True))

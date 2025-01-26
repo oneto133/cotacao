@@ -1,22 +1,39 @@
 import openpyxl
 import pandas as pd
-from Funções import Horarios
+from Funções import Tempo, Arquivo
 import shutil
+import win32com.client as win32
 
 
-class main(Horarios):
+
+class main(Tempo, Arquivo):
     def __init__(self):
         super().__init__()
+        self.destino = r"C:\Users\rodri\OneDrive\Documentos\Banco_gênio_temp.xlsx"
         self.arquivos()
 
     def arquivos(self):
-        df = pd.read_csv(r'csv/indice.csv')
-        origem = r"C:\Users\rodri\OneDrive\Documentos\Banco Gênio.xlsx"
-        destino = r"C:\Users\rodri\OneDrive\Documentos\Banco_gênio_temp.xlsx"
-        shutil.copy2(origem, destino)
-        arq = openpyxl.load_workbook(r"C:\Users\rodri\OneDrive\Documentos\Banco_gênio_temp.xlsx", data_only=True)
-        base = openpyxl.load_workbook(r"C:\Users\rodri\OneDrive\Documentos\Base.xlsx")
-        self.programa(df, arq, base)
+        try:
+            df = pd.read_csv(r'csv/indice.csv')
+            origem = r"C:\Users\rodri\OneDrive\Documentos\Banco Gênio.xlsx"
+            shutil.copy2(origem, self.destino)
+            arq = openpyxl.load_workbook(r"C:\Users\rodri\OneDrive\Documentos\Banco_gênio_temp.xlsx", data_only=True)
+            base = openpyxl.load_workbook(r"C:\Users\rodri\OneDrive\Documentos\Base.xlsx")
+            self.programa(df, arq, base)
+        except PermissionError as e:
+            print("Parece que o arquivo está aberto, vamos tentar fechar para você")
+            try:
+                excel = win32.gencache.EnsureDispatch('Excel.Application')
+                pasta = excel.Workbooks.Open(origem)
+                pasta.Close(SaveChanges=False)
+                pasta = excel.Workbooks.Open(r"C:\Users\rodri\OneDrive\Documentos\Base.xlsx")
+                pasta.Close(SaveChanges=True)
+                excel.Quit()
+            except Exception as e:
+                print("Erro ao tenar fechar a pasta: ", e)
+
+
+
 
     def programa(self, df, arq, base):
 
@@ -32,7 +49,6 @@ class main(Horarios):
                 dado = [cell.value for cell in row]
                 Dados.extend(dado)
 
-
         for coluna, valor in enumerate(Dados):
             Banco_de_dados.cell(row=linha_destino, column=coluna_destino + coluna, value=valor)
 
@@ -43,12 +59,13 @@ class main(Horarios):
             file.write(f'"{linha_destino+1}",{self.data_atual()},{self.hora_atual()}')
 
         base.save(r"C:\Users\rodri\OneDrive\Documentos\Base.xlsx")
-        print("executado")
+        self.excluir(self.destino)
+
 
 if __name__ == "__main__":
     df = pd.read_csv(r"csv/indice.csv", encoding="latin1")
     data = df.columns[1]
-    Hor = Horarios()
+    Hor = Tempo()
     dat = Hor.data_atual()
     if data != dat:
         main()

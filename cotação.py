@@ -1,12 +1,12 @@
 from bs4 import BeautifulSoup
-from Funções import Tratamento_de_strings, csv, Horarios, moeda
+from Funções import Tratamento_de_strings, csv, Tempo, moeda
 from enviar_email import enviar_mensagem
 import traceback, cloudpickle, requests, asyncio
 import pandas as pd
 from time import sleep
-from dados_excel import main as excel
+from dados_excel import main as Excel
 
-class conexão (csv, Tratamento_de_strings, Horarios, moeda):
+class conexão (csv, Tratamento_de_strings, Tempo, moeda):
     def __init__(self, tipo):
 
         super().__init__()
@@ -89,7 +89,7 @@ class conexão (csv, Tratamento_de_strings, Horarios, moeda):
         except Exception as e:
             self.escrever_csv(conteudo=f"Erro inesperado: {e}", nome=r"erros.csv", tipo="a")
 
-class main(Horarios):
+class main(Tempo):
     def __init__(self):
         super().__init__()
 
@@ -98,6 +98,13 @@ class main(Horarios):
             hora = self.hora_atual()
             print(hora)
             if int(hora[:2]) < 10 or int(hora[:2]) >= 18:
+                if int(hora[:2]) >=18 and int(hora[:2]) <= 22:
+                    df = pd.read_csv(r"csv/indice.csv", encoding="latin1")
+                    data = df.columns[1]
+                    Hor = Tempo()
+                    dat = Hor.data_atual()
+                    if data != dat:
+                        Excel()
                 if int(hora[:2]) < 10:
                     tempo = 10 - int(hora[:2])
                     tempo = int(tempo) * 30 * 60

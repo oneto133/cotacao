@@ -1,19 +1,6 @@
-import asyncio
-from cotação import main as cot
+import win32com.client as win32
 
-async def fii():
-    cotação = cot()
-    print("Exce")
-    await cotação.programa("fii")
-
-async def bdr():
-    cotação = cot()
-    print("executado")
-    await cotação.programa("bdr")
-    
-
-async def main():
-    await asyncio.gather(bdr(), fii())
-
-
-asyncio.run(main())
+excel = win32.gencache.EnsureDispatch('Excel.Application')
+wb = excel.Workbooks.Open(r'C:\Users\rodri\OneDrive\Documentos\Base.xlsx')
+wb.Close(SaveChanges=True)  # Fecha o arquivo sem salvar
+excel.Quit()
