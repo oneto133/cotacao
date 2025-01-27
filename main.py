@@ -12,11 +12,11 @@ class Programa(Tempo):
         
     async def fii(self):
         cotação = cot()
-        print("Exce")
+        print("Excel")
         await cotação.programa("fii")
 
     async def bdr(self):
-        cotação = cot(self)
+        cotação = cot()
         print("executado")
         await cotação.programa("bdr")
         
@@ -34,7 +34,6 @@ class Programa(Tempo):
         else:    
             await asyncio.gather(self.bdr(), self.fii())
 
-        
 if __name__ == "__main__":
     try:
         programa = Programa()

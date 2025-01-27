@@ -116,7 +116,7 @@ class main(Tempo):
                     await asyncio.sleep(tempo)
                 
             else:
-                print("Funcionando normal")
+                print("Funcionando normal", tipo)
                 await self.conn(tipo)
         
         
