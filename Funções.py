@@ -14,7 +14,8 @@ except:
   from datetime import datetime
   import pandas as pd
   from datetime import date
-  import pytz, os, platform
+  import datetime, pytz, os, platform
+
 
 class Tempo:
   def hora(self):

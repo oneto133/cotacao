@@ -73,7 +73,7 @@ class conexão (csv, Tratamento_de_strings, Tempo, moeda):
                                            equivalente=self.equivalente))
                 self.escrever_csv(conteudo=(f'"{self.código}", "{self.cotação}",'
                                            f'"{self.hora_atual()}", "{self.data_atual()}", "{self.variações}"'),
-                                 nome=r"csv/dados_das_cotações.csv", tipo="a"
+                                 nome=r"csv/dad.csv", tipo="a"
                                            )
                 
         except (ValueError, TypeError) as e:
