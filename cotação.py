@@ -94,6 +94,7 @@ class main(Tempo):
         super().__init__()
 
     async def programa(self, tipo):
+        vez = 0
         while True:
             hora = self.hora_atual()
             print(hora)
@@ -116,7 +117,7 @@ class main(Tempo):
                     await asyncio.sleep(tempo)
                 
             else:
-                print("Funcionando normal")
+                print("Funcionando normal", tipo)
                 await self.conn(tipo)
         
         

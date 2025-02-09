@@ -1,25 +1,27 @@
 import asyncio
-from cotação import main as cot
-from enviar_email import enviar_mensagem
 import cloudpickle
 import traceback
+import pandas as pd
+from cotação import main as cot
+from enviar_email import enviar_mensagem
 from Funções import Tempo
 from dados_excel import main as excel
-import pandas as pd
 class Programa(Tempo):
     def __init__(self):
         super().__init__()
         
     async def fii(self):
         cotação = cot()
-        print("Exce")
+        print("Excel")
         await cotação.programa("fii")
 
     async def bdr(self):
-        cotação = cot(self)
+        cotação = cot()
         print("executado")
         await cotação.programa("bdr")
-        
+
+    async def base_banco(self):
+        pass 
 
     async def main(self):
         if self.Dias_da_semana(True) == 5 or self.Dias_da_semana(True) == 6:
@@ -34,7 +36,6 @@ class Programa(Tempo):
         else:    
             await asyncio.gather(self.bdr(), self.fii())
 
-        
 if __name__ == "__main__":
     try:
         programa = Programa()

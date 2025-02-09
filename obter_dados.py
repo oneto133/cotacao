@@ -1,6 +1,5 @@
 import pandas as pd
-from Funções import csv
-
+from Funções import csv, Tempo
 class dados():
     def __init__(self, codigo="MXRF11", data_inicial=str(), data_final=str(), arquivo="csv/dados_das_cotações.csv"):
       
@@ -58,9 +57,13 @@ class dados():
             pass
             # print("O preço está na sua média")
         else:
-            pass
-            # print(f"Acima média R${valor:.2f}")
-class main:
+            print(f"Acima média R${valor:.2f}")
+            print(self.codigo)
+            print(f"Preço médio: R$",preço_medio)
+            print(f"Valor mínimo no período: R${min(lista):.2f}\nMáxima do periodo: R${max(lista)}")
+            print(f"Ultimo valor R${lista[-1]}")
+            print("*="*20)
+class main(Tempo):
     def __init__(self, Unitário=False, Vários=False, código=str()):
         if Unitário:
             self.código = código
@@ -70,7 +73,7 @@ class main:
             self.todos()
             
     def unitário(self):
-        dados(data_final="17/01/2025", data_inicial="01/01/2025", codigo=self.código)
+        dados(data_final=str(self.data_atual()), data_inicial="01/01/2025", codigo=self.código)
         
     def todos(self):
         arquivo = csv()
@@ -79,10 +82,10 @@ class main:
     
         for valor in ticker:
             codigo.append(valor)
-            dados(data_final="24/01/2025", data_inicial="01/01/2025", codigo=valor)
+            dados(data_final=str(self.data_atual()), data_inicial="01/01/2025", codigo=valor)
             
 
 if __name__ == "__main__":
-    main(Unitário=True, código="PETR3")
+    main(Unitário=True, código="MXRF11")
 
  

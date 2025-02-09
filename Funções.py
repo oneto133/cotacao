@@ -5,7 +5,7 @@ try:
   from IPython.display import clear_output # type: ignore
   from pdf2docx import Converter as pdf # type: ignore
   from PIL import ImageTk, Image # type: ignore
-  import datetime, pytz, os, platform #type: ignore
+  
 
 except:
   from time import sleep
@@ -14,6 +14,7 @@ except:
   from datetime import datetime
   import pandas as pd
   from datetime import date
+  import pytz, os, platform
 
 class Tempo:
   def hora(self):
