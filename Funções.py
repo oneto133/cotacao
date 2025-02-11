@@ -14,7 +14,7 @@ except:
   from datetime import datetime
   import pandas as pd
   from datetime import date
-  import datetime, pytz, os, platform
+  import pytz, os, platform
 
 
 class Tempo:
